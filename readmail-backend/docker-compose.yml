@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+    web:
+        build: .
+        image: readmail-backend-docker
+        restart: "no"
+        environment:
+            DBHOST: postgresql
+            DBUSER: postgres
+            DBPASS: password
+            DEVISE_JWT_SECRET_KEY: 6f8f597c5556aea29c4f9adb3a55f12b8c3a872cf8cec0a569e744748be2b4f4a6c22cad8fa9242551bfc23072571084218f40ee5c3ec7b6d7b6366c8a07a7ff
+        ports:
+            - 3000:3000
+        depends_on:
+            - postgresql
+        tty: true
+        stdin_open: true
+
+    postgresql:
+        image: postgres
+        restart: "no"
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: readmail_backend_development
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+        volumes:
+            - postgresdb:/var/lib/postgresql/data/
+
+volumes:
+    postgresdb:
